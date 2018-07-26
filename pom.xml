@@ -33,8 +33,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git:@github.com/serkanalgl/hydro-raindrop-java.git</connection>
-        <developerConnection>scm:git:ssh:@github.com:serkanalgl/hydro-raindrop-java.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/serkanalgl/hydro-raindrop-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/serkanalgl/hydro-raindrop-java.git</developerConnection>
         <url>http://github.com/serkanalgl/hydro-raindrop-java</url>
     </scm>
 
