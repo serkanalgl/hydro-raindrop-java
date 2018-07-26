@@ -4,7 +4,7 @@
 
     <groupId>com.github.serkanalgl</groupId>
     <artifactId>hydro-raindrop-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java library to access the Hydro Raindrop API.</description>
@@ -34,7 +34,7 @@
         <connection>scm:git:ssh://git@github.com/serkanalgl/hydro-raindrop-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/serkanalgl/hydro-raindrop-java.git</developerConnection>
         <url>http://github.com/serkanalgl/hydro-raindrop-java</url>
-      <tag>hydro-raindrop-java-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>
