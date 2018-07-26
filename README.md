@@ -6,7 +6,7 @@
 
 <p>This java library provides a suite of convenience functions intended to simplify the integration of Hydro's Raindrop authentication into your project.</p>
 
-<p>For more details, please check <a href="https://www.hydrogenplatform.com/docs/hydro/v1/">Hydrogen Raindrop Api Docs</a></p>
+<p>Offical Raindrop API documentation is available <a href="https://www.hydrogenplatform.com/docs/hydro/v1/">here</a></p>
 
 ## Dependency
 
@@ -24,7 +24,7 @@
 
 ### Recommended
 
-Current version is 1.0.0-SNAPSHOT. Will be published in maven central after release. (it depends hydro raindrop api)
+Current version is 1.0.0-SNAPSHOT. Will be published in maven central after release.
 
 
 ### Manual
@@ -40,16 +40,17 @@ mvn clean install
 ## Usage
  
 ## Client-side Raindrop
-To instantiate a new RaindropPartnerConfig object:
+First, you should initialize RaindropPartnerConfig with Builder and then create a new RaindropClient instance with it.
 
 ```java
 
 try{
 
-    RaindropPartnerConfig config = 
-        new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION)
-          .setApplicationId("application id")
-          .build(); 
+    RaindropPartnerConfig config = new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION)
+        .setApplicationId("application id")
+        .build(); 
+          
+    RaindropClient client = new Raindrop().client(config);
     
 }catch (Exception e) {
     //something went wrong
@@ -57,22 +58,13 @@ try{
   
 ```
 
-You must pass a config object with the following values:
+To create a new RaindropPartnerConfig object, you must pass the following parameters:
 
   - `clientId` (required): Your OAuth id for the Hydro API
   - `clientSecret` (required): Your OAuth secret for the Hydro API
   - `environment` (default: SANDBOX): `Environment.SANDBOX` | `Environment.PRODUCTION`
   - `applicationId` (required): Your application id for the Hydro API  
   
-  
-<br /> 
-To instantiate a new RaindropClient object:
-
-```java
-
-    RaindropClient client = new Raindrop().client(config);
-    
-```
 
 ### RaindropClient Functions
 
@@ -86,7 +78,7 @@ try{
     BaseResponse response = client.registerUser(hydroId); 
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -97,15 +89,16 @@ try{
 
 
 #### `generateMessage()`
-This method generates 6-digit number using with SecureRandom which are for users will type into their Hydro mobile app.
+This method generates 6-digit number using with SecureRandom. You should show this number to your users. The user will type into the hydro mobile app.
 
 ```java
 
 try{
+
     Integer message = client.generateMessage(); 
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -128,7 +121,7 @@ try{
 
 - `VerifySignature`
     - `response.isVerified()`: Successful verifications will return `true`
-    - `response.getVerificationId()`: A UUID for this verification attempt.
+    - `response.getVerificationId()`: Returns a UUID for this verification attempt.
     - `response.getTimestamp()`: The time of this verification attempt.
 
 
@@ -142,7 +135,7 @@ try{
     BaseResponse response = client.deleteUser(hydroId); 
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -153,14 +146,15 @@ try{
 
 
 ## Server-side Raindrop
-To instantiate a new RaindropPartnerConfig object:
+First, you should initialize RaindropPartnerConfig with Builder and then create a new RaindropServer instance with it.
 
 ```java
 
 try{
 
-    RaindropPartnerConfig config = 
-        new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION).build(); 
+    RaindropPartnerConfig config = new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION).build(); 
+        
+    RaindropServer server = new Raindrop().server(config);
     
 }catch (Exception e) {
     //something went wrong
@@ -168,37 +162,28 @@ try{
   
 ```
 
-You must pass a config object with the following values:
+To create a new `RaindropPartnerConfig` object, you must pass the following parameters:
 
   - `clientId` (required): Your OAuth id for the Hydro API
   - `clientSecret` (required): Your OAuth secret for the Hydro API
   - `environment` (default: SANDBOX): `Environment.SANDBOX` | `Environment.PRODUCTION`
   
-<br /> 
-To instantiate a new RaindropClient object:
-
-```java
-
-    RaindropServer server = new Raindrop().server(config);
-    
-```
-
 
 ### RaindropServer Functions
 
 #### `whitelist(String address)`
-Add address to whitelist ( be careful, for security purposes, the id will only be generated one time. )
+Add address to whitelist ( be careful, for security purposes, the id will only be generated one time. ) The hydroAddressId should be stored on your databasse.
 
 ```java
 
 try{
 
-    String address = "0x..." //The user’s Ethereum address
+    String address = "0x..."; //The user’s Ethereum/Hydro address
 
     Whitelist whitelist = server.whitelist(address); 
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -219,12 +204,10 @@ After being whitelisted, each user must authenticate through the Server-side Rai
 
 try{
 
-    String hydroAddressId = whitelist.getHydroAddressId(); // should be stored on your own database.
-
     Challenge challenge = server.challenge(hydroAddressId);
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -241,18 +224,16 @@ You will need to relay these values to the authenticating user who will send the
 
 
 #### `authenticate(String hydroAddressId)`
-Once the raindrop has been completed by the end user and confirmed in the blockchain, the final authentication check can be performed
+Once the raindrop has been completed by the end user and confirmed in the blockchain, the final authentication check can be performed.
 
 ```java
 
 try{
 
-    String hydroAddressId = whitelist.getHydroAddressId(); // should be stored on your own database.
-
     Authenticate authenticate = server.authenticate(hydroAddressId);
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
 }
                  
 ```
@@ -269,14 +250,39 @@ try{
 ### `transactionStatus(String transactionHash)`
 Certain methods in the Hydro API trigger transactions on the Ethereum blockchain. Transactions take time to be confirmed, so rather than waiting for confirmation, these methods will return a transaction_hash as soon as our internal logic has completed successfully and the appropriate transaction has been broadcast to the Ethereum network.
 
+Example code for Raindrop Client:
 ```java
 
 try{
 
-    TransactionStatus transactionStatus = serverOrClientInstance.transactionStatus("0x....");
+    RaindropPartnerConfig config = new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION)
+        .setApplicationId("application id")
+        .build(); 
+              
+    RaindropClient client = new Raindrop().client(config);
+
+    TransactionStatus transactionStatus = client.transactionStatus("0x....");
     
 }catch (RaindropException e) {
-    //something went worng
+    //something went wrong
+}
+                 
+```
+
+
+Example code for Raindrop Server:
+```java
+
+try{
+
+    RaindropPartnerConfig config = new RaindropPartnerConfig.Builder("client id", "client secret", Environment.PRODUCTION).build(); 
+            
+    RaindropServer server = new Raindrop().server(config);
+
+    TransactionStatus transactionStatus = server.transactionStatus("0x....");
+    
+}catch (RaindropException e) {
+    //something went wrong
 }
                  
 ```
