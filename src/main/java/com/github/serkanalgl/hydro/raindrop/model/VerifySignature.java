@@ -45,6 +45,7 @@ public class VerifySignature extends BaseResponse {
                 "verified=" + verified +
                 ", verificationId='" + verificationId + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", " + super.toString() +
                 '}';
     }
 }

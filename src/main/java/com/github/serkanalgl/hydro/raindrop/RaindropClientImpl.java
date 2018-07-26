@@ -119,11 +119,22 @@ final class RaindropClientImpl extends RaindropPartnerBase implements RaindropCl
             try {
 
                 JSONObject verifyJson = jsonResponse.getBody().getObject();
+                if(jsonResponse.getStatus() == HttpStatus.SC_OK){
+
+                    VerifySignature verifySignature = new VerifySignature();
+                    verifySignature.setStatus(HttpStatus.SC_OK);
+                    verifySignature.setVerified(jsonResponse.getStatus() == HttpStatus.SC_OK);
+                    verifySignature.setVerificationId(verifyJson.getString("verification_id"));
+                    verifySignature.setTimestamp(verifyJson.getString("timestamp"));
+                    return verifySignature;
+
+                }
 
                 VerifySignature verifySignature = new VerifySignature();
-                verifySignature.setVerified(jsonResponse.getStatus() == HttpStatus.SC_OK);
-                verifySignature.setVerificationId(verifyJson.getString("verification_id"));
-                verifySignature.setTimestamp(verifyJson.getString("timestamp"));
+                verifySignature.setStatus(verifyJson.getInt("status"));
+                verifySignature.setMessage(verifyJson.getString("message"));
+                verifySignature.setVerified(false);
+
                 return verifySignature;
 
             } catch (JSONException e) {
