@@ -24,7 +24,15 @@
 
 ### Recommended
 
-Current version is 1.0.0-SNAPSHOT. Will be published in maven central after release.
+Add below dependency into your pom.xml
+
+```
+<dependency>
+    <groupId>com.github.serkanalgl</groupId>
+    <artifactId>hydro-raindrop-java</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
 
 ### Manual
